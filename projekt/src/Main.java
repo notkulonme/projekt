@@ -19,7 +19,7 @@ public class Main {
                 A válasz megadásához csak gépelje be az előtte lévő sorszámot.
                 Jó játékot!😊
                 """);
-        for(Quiz qz : data)
+        for(Quiz qz : data)//game loop
         {
             qz.game();//Quiz.java fileban olvasható a működése
             System.out.print("\tAdja meg a választ: ");
