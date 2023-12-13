@@ -5,15 +5,29 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<String> lines = readFromFile(new File("quiz.qz"));
-        ArrayList<Quiz> data = dataProcessing(lines);
+        //-----------------előkészületek------------------
+        ArrayList<String> lines = readFromFile(new File("quiz.qz"));//sorok beolvasása a fileból
+        ArrayList<Quiz> data = dataProcessing(lines);//sorok objecteké alakítása
         Scanner scanner = new Scanner(System.in);
-        int pontok = 0;
 
+        //--------------------játék----------------------
+        int pontok = 0;
+        System.out.println("\nA játék célja, hogy helyesen válaszoljon az ipari forradalommal kapcsolatos quiz kérdésekre.\nA helyes válaszokért pontot kap amelyet a játék végén megtekinthet.\n");
         for(Quiz qz : data)
         {
-            qz.game();
+            qz.game();//Quiz.java fileban olvasható a működése
+            System.out.print("\tAdja meg a választ: ");
+            int answer = scanner.nextInt()-1;
+            if(qz.randomList[answer].equals(qz.goodAns))//válasz ellenörzése
+            {
+                System.out.println("\thelyes válasz!\n");
+                pontok++;
+            }
+            else
+                System.out.printf("\thelytelen válasz!\n\t\"%s\" lett volna a helyes válasz\n\n",qz.goodAns);
+
         }
+        System.out.printf("Ön %d pontott kapott",pontok);
     }
     public static ArrayList<String> readFromFile(File file) throws FileNotFoundException//returns the lines of the file
     {
@@ -22,7 +36,7 @@ public class Main {
         while(scannner.hasNextLine())
         {
             String line = scannner.nextLine();
-            if(!line.contains('#'))
+            if(!line.contains("#") && !line.equals(""))
                 sorok.add(line);
         }
         return sorok;
