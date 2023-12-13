@@ -22,7 +22,7 @@ public class Main {
         while(scannner.hasNextLine())
         {
             String line = scannner.nextLine();
-            if(line.charAt(0)!='#')
+            if(!line.contains('#'))
                 sorok.add(line);
         }
         return sorok;
