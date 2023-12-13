@@ -24,7 +24,7 @@ public class Main {
                 pontok++;
             }
             else
-                System.out.printf("\thelytelen válasz!\n\t\"%s\" lett volna a helyes válasz\n\n",qz.goodAns);
+                System.out.printf("\thelytelen válasz!\n\t\"%s\" lett volna a helyes\n\n",qz.goodAns);
 
         }
         System.out.printf("Ön %d pontott kapott",pontok);
