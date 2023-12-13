@@ -12,7 +12,7 @@ public class Quiz {
         this.goodAns = goodAns;
 
     }
-    public void printAll()
+    public void game()
     {
         Random random = new Random();
         String rnad[] = {answ1,answ2,goodAns};
