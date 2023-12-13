@@ -12,7 +12,7 @@ public class Main {
 
         for(Quiz qz : data)
         {
-            qz.printAll();
+            qz.game();
         }
     }
     public static ArrayList<String> readFromFile(File file) throws FileNotFoundException//returns the lines of the file
