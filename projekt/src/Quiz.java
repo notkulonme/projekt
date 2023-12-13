@@ -1,8 +1,8 @@
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.Random;
 public class Quiz {
     String qstion,answ1,answ2,goodAns;
-    String[] ansrand;
+    String[] randomList;
 
     public Quiz(String qstion, String answ1, String answ2, String goodAns)
     {
@@ -14,20 +14,20 @@ public class Quiz {
     }
     public void game()
     {
-        Random random = new Random();
+        /*-------------------lista randomizálása---------------------------------*/
+        Random random = new Random(LocalDateTime.now().getSecond());
         String rnad[] = {answ1,answ2,goodAns};
-        int i1 = random.nextInt(2);
-        int i2 = random.nextInt(2);
-        while(i1 == i2)
+        int i1 = random.nextInt(3);//random indexek generálása
+        int i2 = random.nextInt(3);
+        while(i1 == i2)//új index generálása amíg a kettő megegyezeik
         {
-            i2 = random.nextInt(2);
+            i2 = random.nextInt(3);
         }
-        int i3 = 3-i1-i2;
-        System.out.println(i1+" "+i2+" "+i3);
-        String answrand[] = {rnad[i1],rnad[i2],rnad[i3]};
-        System.out.println(Arrays.toString(answrand)+"\n"+ Arrays.toString(rnad));
-        this.ansrand = answrand;
-        System.out.println(qstion+"\n\t1."+ansrand[0]+" 2."+ansrand[1]+" 3."+ansrand[2]);
+        int i3 = 3-i1-i2;//harmadik index kiszámolása
+        String answrand[] = {rnad[i1],rnad[i2],rnad[i3]};//a lista randomizálása
+        this.randomList = answrand;//random lista lálthatóvá tétele
+        /*----------------a ranodomizált lista kiírása---------------------------*/
+        System.out.println(qstion+"\n\t\t1."+randomList[0]+" 2."+randomList[1]+" 3."+randomList[2]);//kiírás
     }
-
+    
 }
