@@ -12,10 +12,13 @@ public class Main {
 
         //--------------------játék----------------------
         int pontok = 0;
-        System.out.println("\nA játék célja, hogy helyesen válaszoljon az ipari forradalommal kapcsolatos quiz kérdésekre." +
-                "\nA helyes válaszokért pontot kap amelyet a játék végén megtekinthet." +
-                "\nA válasz megadásához csak gépelje be az előtte lévő sorszámot." +
-                "\nJó játékot!😊\n");
+        System.out.println("""
+
+                A játék célja, hogy helyesen válaszoljon az ipari forradalommal kapcsolatos quiz kérdésekre.
+                A helyes válaszokért pontot kap amelyet a játék végén megtekinthet.
+                A válasz megadásához csak gépelje be az előtte lévő sorszámot.
+                Jó játékot!😊
+                """);
         for(Quiz qz : data)
         {
             qz.game();//Quiz.java fileban olvasható a működése
