@@ -2,7 +2,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 public class Quiz {
     String qstion,answ1,answ2,goodAns;
-    String[] randomList;
+    String[] randomList;//a randomizált
 
     public Quiz(String qstion, String answ1, String answ2, String goodAns)
     {
@@ -19,7 +19,7 @@ public class Quiz {
         String rnad[] = {answ1,answ2,goodAns};
         int i1 = random.nextInt(3);//random indexek generálása
         int i2 = random.nextInt(3);
-        while(i1 == i2)//új index generálása amíg a kettő megegyezeik
+        while(i1 == i2)//esetleges index konfliktus feloldása
         {
             i2 = random.nextInt(3);
         }
@@ -27,7 +27,8 @@ public class Quiz {
         String answrand[] = {rnad[i1],rnad[i2],rnad[i3]};//a lista randomizálása
         this.randomList = answrand;//random lista lálthatóvá tétele
         /*----------------a ranodomizált lista kiírása---------------------------*/
-        System.out.println(qstion+"\n\t\t1."+randomList[0]+" 2."+randomList[1]+" 3."+randomList[2]);//kiírás
+        //System.out.println(qstion+"\n\t\t1."+randomList[0]+"\t2."+randomList[1]+" \t3."+randomList[2]);//kiírás
+        System.out.printf("%s\n          1. %s     2. %s     3. %s\n",qstion,randomList[0],randomList[1],randomList[2]); // a \t valamiért nem működött rendesen, nem volt kedvem debugolni
     }
-    
+
 }
