@@ -42,6 +42,8 @@ public class Main {
 
         }
         System.out.printf("Ön %d pontott kapott",pontok);
+        scanner = new Scanner(System.in);
+        String end = scanner.nextLine();
     }
     public static ArrayList<String> readFromFile(File file) throws FileNotFoundException//returns the lines of the file
     {
