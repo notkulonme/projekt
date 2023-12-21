@@ -19,7 +19,6 @@ public class Main {
         ServerSocket server = new ServerSocket(PORT);
         Worker worker = new Worker(conf);
         while(true){
-            worker = new Worker(conf);
             Socket socket = server.accept();
             worker.setSocket(socket);
             worker.run();
