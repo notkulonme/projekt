@@ -1,3 +1,5 @@
+import Logger.Logger;
+
 public class requestParser {
     String wholeRequest;
     String requestType;
@@ -5,9 +7,16 @@ public class requestParser {
 
 
     public requestParser(String request) {
-        this.wholeRequest = request;
-        String[] data = request.split(" ");
-        requestType = data[0];
-        requestedFile = data[1];
+        try {
+            this.wholeRequest = request;
+            String[] data = request.split(" ");
+            requestType = data[0];
+            requestedFile = data[1];
+        } catch (Exception e) {
+            requestType = null;
+            requestedFile = null;
+            Logger logger = new Logger(Main.conf.getValue("loggerpath"));
+            logger.log("Iternal server error");
+        }
     }
 }

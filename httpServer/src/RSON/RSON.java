@@ -9,14 +9,14 @@ import java.util.Scanner;
 
 public class RSON {
     private final String PATH;
-    private HashMap<String,String> data = new HashMap<>();
+    private HashMap<String, String> data = new HashMap<>();
 
     public RSON(String PATH) {
         this.PATH = PATH;
         proces(read());
     }
-    private String read()
-    {
+
+    private String read() {
         Scanner scanner;
         String lines = "";
         try {
@@ -24,43 +24,40 @@ public class RSON {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        while(scanner.hasNextLine())
-        {
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(!line.contains("#"))
+            if (!line.contains("#"))
                 lines += rmSpace(line);//removes all unnecessary spaces (there are necessary ones in the names)
         }
-        lines = lines.replaceAll("\"",""); //replaces all " with nothing for the easier data proces
+        lines = lines.replaceAll("\"", ""); //replaces all " with nothing for the easier data proces
         return lines;
     }
-    private void proces(String line)
-    {
+
+    private void proces(String line) {
         String[] list = line.split(";");
         for (String string : list) {
             String[] values = string.split("=");
             data.put(values[0], values[1]);
         }
     }
-    public String getValue(String key)
-    {
+
+    public String getValue(String key) {
         return data.get(key);
     }
-    public ArrayList<String> getArray(String key)
-    {
+
+    public ArrayList<String> getArray(String key) {
         return (ArrayList<String>) Arrays.asList(data.get(key).split(","));
     }
 
-    public int getInt(String key)
-    {
+    public int getInt(String key) {
         return Integer.parseInt(data.get(key));
     }
-    private String rmSpace(String from)
-    {
+
+    private String rmSpace(String from) {
         boolean removable = true;
         String rstring = "";
-        for(int i = 0; i < from.length(); i++)
-        {
-            if(from.charAt(i) == '\"')
+        for (int i = 0; i < from.length(); i++) {
+            if (from.charAt(i) == '\"')
                 removable = !removable;
             if (!(from.charAt(i) == ' ' && removable))
                 rstring += from.charAt(i);
