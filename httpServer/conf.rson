@@ -1,0 +1,3 @@
+"port" = "80";
+"webroot" = "C:/Users/nrics/OneDrive/Asztali gép/webserver";
+"loggerpath" = "C:/Users/nrics/OneDrive/Asztali gép/webserver/log.txt";
