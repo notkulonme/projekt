@@ -20,22 +20,10 @@ public class Logger {
 
         try {
             writer = new BufferedWriter(new FileWriter(PATH, true));
-        } catch (IOException e) {
-            System.out.println("\tLogger cant open the file");
-        }
-        boolean writed = false;
-        while (!writed) {
-            try {
-                writer.write(inf + "\n");
-                writed = true;
-            } catch (IOException e) {
-                System.out.println("\tLogger can't write the file");
-            }
-        }
-        try {
+            writer.write(inf + "\n");
             writer.close();
         } catch (IOException e) {
-            System.out.println("\tLogger cant close the file");
+            System.out.println("\tFailure while writing to the file");
         }
 
     }

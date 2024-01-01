@@ -1,0 +1,3 @@
+"port" = "80";
+"webroot" = "C:/webserver";
+"loggerpath" = "C:/webserver/log.txt";

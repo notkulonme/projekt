@@ -28,6 +28,7 @@ public class ContentType {
         text.add("js");
         text.add("txt");
         text.add("xml");
+        text.add("pdf");
 
     }
     public Boolean isImage(String type) {

@@ -3,6 +3,7 @@ import RSON.RSON;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Scanner;
@@ -43,27 +44,25 @@ public class Worker {
                 if (parser.requestType.toLowerCase().equals("get")) {
                     File f = new File(Main.WEBROOT + parser.requestedFile);
                     if (f.exists() || parser.requestedFile.equals("/")) {
-
+                        byte[] content = Files.readAllBytes(f.toPath());
                         if (ct.isText(parser.fileType)) {
 
                             if (parser.requestedFile.equals("/")) {
-                                byte[] content = toString(f).getBytes();
+
                                 response.addToHeader("HTTP/1.1 200 ok");
                                 response.addToHeader("Content-Type: text/html");
-                                response.addToHeader("Cotent-Length: " + content.length);
+                                response.addToHeader("Content-Length: " + content.length);
                                 response.addToHeader("Connection: close");
-                                response.addToBody((f));
+                                response.addToBody(f);
 
                             } else {
-                                byte[] content = toString(f).getBytes();
                                 response.addToHeader("HTTP/1.1 200 ok");
                                 response.addToHeader("Content-Type: text/" + parser.fileType);
-                                response.addToHeader("Cotent-Length: " + content.length);
+                                response.addToHeader("Content-Length: " + content.length);
                                 response.addToHeader("Connection: close");
-                                response.addToBody((f));
+                                response.addToBody(f);
                             }
 
-                            writer.write(response.getResponse());
 
                         } else {
 
@@ -71,26 +70,25 @@ public class Worker {
                             response.addToHeader("Content-Type: image/" + parser.fileType);
                             response.addToHeader("Connection: close");
                             response.addToBody(f);
-                            writer.write(response.getResponse());
 
                         }
 
                     } else {
                         if ((parser.fileType.equals("null") || ct.isText(parser.fileType)) && conf.getBool("404")) {
                             f = new File(Main.WEBROOT + "/404.html");
-                            byte[] content = toString(f).getBytes();
+                            byte[] content = Files.readAllBytes(f.toPath());
                             response.addToHeader("HTTP/1.1 404 Not Found");
                             response.addToHeader("Content-Type: text/html");
-                            response.addToHeader("Cotent-Length: " + content.length);
+                            response.addToHeader("Content-Length: " + content.length);
                             response.addToHeader("Connection: close");
                             response.addToBody(f);
                         } else {
                             response.addToHeader("HTTP/1.1 404 Not Found");
                             response.addToHeader("Connection: close");
                         }
-                        writer.write(response.getResponse());
-                    }
 
+                    }
+                    writer.write(response.getResponse());
 
                 }
             } else {
@@ -99,6 +97,7 @@ public class Worker {
             }
             writer.flush();
         } catch (IOException e) {
+            //this probably need more error handling but i dont wanna do it :c
             logger.log("IOexception");
         }
 

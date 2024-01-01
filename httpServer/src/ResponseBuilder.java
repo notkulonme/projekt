@@ -1,5 +1,3 @@
-import Logger.Logger;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,13 +8,13 @@ public class ResponseBuilder {
     private byte[] byteBody;
     final String CRLF = "\r\n";
 
-    private Logger logger;
+
 
     public ResponseBuilder() {
 
         this.byteHeader = new byte[0];
         this.byteBody = new byte[0];
-        logger = new Logger(Main.conf.getValue("loggerpath"));
+
     }
 
 
