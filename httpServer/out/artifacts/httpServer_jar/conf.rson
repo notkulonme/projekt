@@ -1,5 +1,4 @@
 "port" = "80";
-"maxThreadCount" = "10";
 "webroot" = "C:/Users/nrics/OneDrive/Asztali gép/webserver";
 "loggerpath" = "C:/Users/nrics/OneDrive/Asztali gép/webserver/log.txt";
-"blackList" = "192.168.1.129","172.0.0.2";
+"404" = "true";

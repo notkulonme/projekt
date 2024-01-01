@@ -21,8 +21,12 @@ public class requestParser {
             if (!requestedFile.equals("/")) {
                 arr = requestedFile.split("\\.");
                 fileType = arr[arr.length - 1];
-            } else
+                if (fileType.equals(requestedFile))
+                    fileType = "null";
+            } else {
                 fileType = "html";
+                requestedFile = "/index.html";
+            }
         } catch (Exception e) {
             requestType = null;
             requestedFile = null;

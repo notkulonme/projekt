@@ -1,3 +1,4 @@
+import Logger.Logger;
 import RSON.RSON;
 
 import java.io.*;
@@ -13,6 +14,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         ServerSocket server = new ServerSocket(PORT);
+        Logger logger = new Logger(conf.getValue("loggerpath"));
+        logger.log("start");
         while (true) {
             if(reloadConf())
             {

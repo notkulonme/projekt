@@ -53,6 +53,10 @@ public class RSON {
         return Integer.parseInt(data.get(key));
     }
 
+    public boolean getBool(String key) {
+        return Boolean.parseBoolean(data.get(key));
+    }
+
     private String rmSpace(String from) {
         boolean removable = true;
         String rstring = "";

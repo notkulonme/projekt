@@ -3,8 +3,6 @@ import RSON.RSON;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Scanner;
@@ -15,7 +13,7 @@ public class Worker {
     Logger logger;
     Socket socket;
     final String CRLF = "\r\n";
-    String file;
+
     InputStream inputStream;
     InputStreamReader reader;
     OutputStream writer;
@@ -36,69 +34,69 @@ public class Worker {
             writer = socket.getOutputStream();
 
             request = getRequest();
-            String response = "";
             requestParser parser = new requestParser(request);
 
             logger.log(parser.requestType + " " + parser.requestedFile);
+            ResponseBuilder response = new ResponseBuilder();
             if (parser.validRequest) {
+                ContentType ct = new ContentType();
                 if (parser.requestType.toLowerCase().equals("get")) {
-                    ImageType imageType = new ImageType();
-                    if (!imageType.isImage(parser.fileType)) {
+                    File f = new File(Main.WEBROOT + parser.requestedFile);
+                    if (f.exists() || parser.requestedFile.equals("/")) {
 
-                        if (parser.requestedFile.equals("/")) {
-                            file = toString(new File(Main.WEBROOT + "/index.html"));
-                            response = "HTTP/1.1 202 ok" + CRLF +
-                                    "Content-Length: " + file.getBytes().length + CRLF +
-                                    "Connection: close" + CRLF +//header
-                                    CRLF +
-                                    file +
-                                    CRLF + CRLF;
-                        } else {
-                            try {
-                                file = toString(new File(Main.WEBROOT + parser.requestedFile));
-                                response = "HTTP/1.1 200 ok" + CRLF +
-                                        "Content-Length: " + file.getBytes().length + CRLF +
-                                        "Connection: close" + CRLF +//header
-                                        CRLF +
-                                        file +
-                                        CRLF + CRLF;
-                            } catch (FileNotFoundException e) {
-                                file = toString(new File(Main.WEBROOT + "/404.html"));
-                                response = "HTTP/1.1 404 Not Found" + CRLF +
-                                        "Content-Length: " + file.getBytes().length + CRLF +
-                                        "Connection: close" + CRLF +//header
-                                        CRLF +
-                                        file +
-                                        CRLF + CRLF;
+                        if (ct.isText(parser.fileType)) {
+
+                            if (parser.requestedFile.equals("/")) {
+                                byte[] content = toString(f).getBytes();
+                                response.addToHeader("HTTP/1.1 200 ok");
+                                response.addToHeader("Content-Type: text/html");
+                                response.addToHeader("Cotent-Length: " + content.length);
+                                response.addToHeader("Connection: close");
+                                response.addToBody(toString(f));
+
+                            } else {
+                                byte[] content = toString(f).getBytes();
+                                response.addToHeader("HTTP/1.1 200 ok");
+                                response.addToHeader("Content-Type: text/" + parser.fileType);
+                                response.addToHeader("Cotent-Length: " + content.length);
+                                response.addToHeader("Connection: close");
+                                response.addToBody(toString(f));
                             }
+
+                            writer.write(response.getResponse());
+
+                        } else {
+
+                            response.addToHeader("HTTP/1.1 200 ok");
+                            response.addToHeader("Content-Type: image/" + parser.fileType);
+                            response.addToHeader("Connection: close");
+                            response.addToBody(f);
+                            writer.write(response.getResponse());
+
                         }
-                        writer.write(response.getBytes());
+
                     } else {
-                        byte[] imageBytes = new byte[10];
-                        try {
-                            imageBytes = Files.readAllBytes(Path.of(Main.WEBROOT+"/"+parser.requestedFile));
-                        } catch (IOException e) {
-                            logger.log("The requested image was not found.");
+                        if (parser.fileType.equals("null") && conf.getBool("404")) {
+                            f = new File(Main.WEBROOT + "/404.html");
+                            byte[] content = toString(f).getBytes();
+                            response.addToHeader("HTTP/1.1 404 Not Found");
+                            response.addToHeader("Content-Type: text/html");
+                            response.addToHeader("Cotent-Length: " + content.length);
+                            response.addToHeader("Connection: close");
+                            response.addToBody(toString(f));
+                        } else {
+                            response.addToHeader("HTTP/1.1 404 Not Found");
+                            response.addToHeader("Connection: close");
                         }
-                        String header = "HTTP/1.1 202 ok" + CRLF +
-                                "Content-Type: image/" + parser.fileType + CRLF +
-                                "Connection: close" +
-                                CRLF + CRLF;
-                        byte[] reseponse = addArrays(header.getBytes(), imageBytes);
-                        reseponse = addArrays(reseponse, (CRLF + CRLF).getBytes());
-                        writer.write(reseponse);
+                        writer.write(response.getResponse());
                     }
+
 
                 }
             } else {
-                //file = toString(new File(Main.WEBROOT + "/404.html"));
-                response = "HTTP/1.1 500 Internal Server Error" + CRLF +
-                        "Connection: close"//header
-                        + CRLF + CRLF;
-                writer.write(response.getBytes());
+                //iternal server error | invalid request
+                writer.write(("HTTP/1.1 500 Internal Server Error" + CRLF + "Connection: close" + CRLF + CRLF).getBytes());
             }
-
-
             writer.flush();
         } catch (IOException e) {
             logger.log("IOexception");
@@ -131,7 +129,7 @@ public class Worker {
         scanner = new Scanner(file);
         String str = "";
         while (scanner.hasNextLine())
-            str += scanner.nextLine();
+            str += scanner.nextLine() + "\n";
 
         scanner.close();
         return str + " ";
@@ -155,11 +153,4 @@ public class Worker {
         logger.log("");
     }
 
-    private static byte[] addArrays(byte[] arr1, byte[] arr2) {
-        byte[] finalArr = new byte[arr1.length + arr2.length];
-        System.arraycopy(arr1, 0, finalArr, 0, arr1.length);
-        System.arraycopy(arr2, 0, finalArr, arr1.length, arr2.length);
-        //System.out.println(Arrays.toString(finalArr));
-        return finalArr;
-    }
 }
