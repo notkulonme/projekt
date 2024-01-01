@@ -52,7 +52,7 @@ public class Worker {
                                 response.addToHeader("Content-Type: text/html");
                                 response.addToHeader("Cotent-Length: " + content.length);
                                 response.addToHeader("Connection: close");
-                                response.addToBody(toString(f));
+                                response.addToBody((f));
 
                             } else {
                                 byte[] content = toString(f).getBytes();
@@ -60,7 +60,7 @@ public class Worker {
                                 response.addToHeader("Content-Type: text/" + parser.fileType);
                                 response.addToHeader("Cotent-Length: " + content.length);
                                 response.addToHeader("Connection: close");
-                                response.addToBody(toString(f));
+                                response.addToBody((f));
                             }
 
                             writer.write(response.getResponse());
@@ -76,14 +76,14 @@ public class Worker {
                         }
 
                     } else {
-                        if (parser.fileType.equals("null") && conf.getBool("404")) {
+                        if ((parser.fileType.equals("null") || ct.isText(parser.fileType)) && conf.getBool("404")) {
                             f = new File(Main.WEBROOT + "/404.html");
                             byte[] content = toString(f).getBytes();
                             response.addToHeader("HTTP/1.1 404 Not Found");
                             response.addToHeader("Content-Type: text/html");
                             response.addToHeader("Cotent-Length: " + content.length);
                             response.addToHeader("Connection: close");
-                            response.addToBody(toString(f));
+                            response.addToBody(f);
                         } else {
                             response.addToHeader("HTTP/1.1 404 Not Found");
                             response.addToHeader("Connection: close");
