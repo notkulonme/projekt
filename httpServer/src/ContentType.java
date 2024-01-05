@@ -30,6 +30,7 @@ public class ContentType {
         text.add("xml");
         text.add("pdf");
         text.add("qz");
+        text.add("json");
 
     }
     public Boolean isImage(String type) {
