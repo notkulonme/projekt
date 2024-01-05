@@ -6,16 +6,21 @@ import java.net.ServerSocket;
 
 
 public class Main {
-    static RSON conf = new RSON("conf.rson");
-    public static int PORT = conf.getInt("port");
-    public static String WEBROOT = conf.getValue("webroot");
+    static String confPath;
+    static RSON conf;
+    public static int PORT;
+    public static String WEBROOT;
 
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        confPath = args[0];
+        conf = new RSON(args[0]);
+        PORT = conf.getInt("port");
+        WEBROOT = conf.getValue("webroot");
         ServerSocket server = new ServerSocket(PORT);
         Logger logger = new Logger(conf.getValue("loggerpath"));
-        logger.log("start");
+        logger.log("http server started");
         while (true) {
             if(reloadConf())
             {
@@ -30,7 +35,7 @@ public class Main {
     public static boolean reloadConf()
     {
         int port = PORT;
-        conf = new RSON("conf.rson");
+        conf = new RSON(confPath);
         PORT = conf.getInt("port");
         WEBROOT = conf.getValue("webroot");
         return port != PORT;
