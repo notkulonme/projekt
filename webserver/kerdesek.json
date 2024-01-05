@@ -1,0 +1,92 @@
+[
+    {
+        "question": "Kik voltak az ipari forradalom vezető alakjai?",
+        "answers": {
+            "a": "Földművesek",
+            "b": "Lovaskocsivezetők",
+            "c": "Gyárosok és feltalálók"
+        },
+        "correctAnswer": "c"
+    },
+    {
+        "question": "Melyik évben indult el az ipari forradalom?",
+        "answers": {
+            "a": "1750",
+            "b": "1800",
+            "c": "1600"
+        },
+        "correctAnswer": "a"
+    },
+    {
+        "question": "Milyen források hajtották meg az ipari forradalmat?",
+        "answers": {
+            "a": "Víz és szél",
+            "b": "Gőz és szén",
+            "c": "Lóerő"
+        },
+        "correctAnswer": "b"
+    },
+    {
+        "question": "Hol indult el az ipari forradalom?",
+        "answers": {
+            "a": "Amerika",
+            "b": "Ázsia",
+            "c": "Anglia"
+        },
+        "correctAnswer": "c"
+    },
+    {
+        "question": "Melyik ágazat volt az ipari forradalom középpontjában?",
+        "answers": {
+            "a": "Mezőgazdaság",
+            "b": "Gyártás és ipar",
+            "c": "Kereskedelem"
+        },
+        "correctAnswer": "b"
+    },
+    {
+        "question": "Milyen szerepet játszottak az új találmányok az ipari forradalomban?",
+        "answers": {
+            "a": "Meggyorsították a termelést és fejlődést",
+            "b": "Lassították a fejlődést",
+            "c": "Nem voltak hatással"
+        },
+        "correctAnswer": "a"
+    },
+    {
+        "question": "Mi volt az ipari forradalom hatása a munkaerőpiacra?",
+        "answers": {
+            "a": "Nőtt a kézi munka iránti igény",
+            "b": "Csökkent a munkaerő iránti kereslet",
+            "c": "Nőtt a gépek iránti kereslet"
+        },
+        "correctAnswer": "a"
+    },
+    {
+        "question": "Hogyan változtatta meg az ipari forradalom a városokat?",
+        "answers": {
+            "a": "Csökkentette a városok népességét",
+            "b": "Növelte a városok népességét és méretét",
+            "c": "Nem volt hatással a városokra"
+        },
+        "correctAnswer": "b"
+    },
+    {
+        "question": "Mi volt az ipari forradalom hatása a szállításra?",
+        "answers": {
+            "a": "Nőtt a lóerő használata",
+            "b": "Csökkent a szállítási sebesség",
+            "c": "Fejlődött a vasúti és hajózási szállítás"
+        },
+        "correctAnswer": "c"
+    },
+    {
+        "question": "Melyik iparág volt az egyik legjelentősebb az ipari forradalom idején?",
+        "answers": {
+            "a": "Élelmiszeripar",
+            "b": "Képzőművészet",
+            "c": "Textilipar"
+        },
+        "correctAnswer": "c"
+    }
+]

@@ -1,0 +1,80 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    
+    <main class="glassy-box">
+        <div id="quiz" class="bordered"></div>
+        <button id="submit">Ellenőriz</button>
+        <div id="results" class="bordered"></div>
+    </main>
+    <script>
+        // script.js
+       fetch("/kerdesek.json").then( async (response) => {
+
+            console.log(response.status);
+            return await response.json();
+
+	}).then((json) => {
+	
+	const quizContainer = document.getElementById('quiz');
+        const resultsContainer = document.getElementById('results');
+        const submitButton = document.getElementById('submit');
+
+        console.log(json);
+        
+        showQuiz(json, quizContainer);
+        submitButton.onclick = function(){
+            showResults(json, quizContainer, resultsContainer);
+        }
+	
+	});
+
+        function showQuiz(questions, quizContainer){
+            let output = [];
+            questions.forEach((currentQuestion, questionNumber) => {
+                let answers = [];
+                for(letter in currentQuestion.answers){
+                    answers.push(
+                        `<label>
+                            <input type="radio" name="question${questionNumber}" value="${letter}">
+                            ${letter} :
+                            ${currentQuestion.answers[letter]}
+                        </label>`
+                    );
+                }
+                output.push(
+                    `<div class="question"> ${currentQuestion.question} </div>
+                    <div class="answers"> ${answers.join('')} </div>`
+                );
+            });
+            quizContainer.innerHTML = output.join('<br>');
+
+        }
+
+        function showResults(questions, quizContainer, resultsContainer){
+            let answerContainers = quizContainer.querySelectorAll('.answers');
+            let userScore = 0;
+            questions.forEach( (currentQuestion, questionNumber) => {
+                let answerContainer = answerContainers[questionNumber];
+                let selector = `input[name=question${questionNumber}]:checked`;
+                let userAnswer = (answerContainer.querySelector(selector) || {}).value;
+                if(userAnswer === currentQuestion.correctAnswer){
+                    userScore++;
+                    answerContainers[questionNumber].style.color = 'lightgreen';
+                }
+                else{
+                    answerContainers[questionNumber].style.color = 'red';
+                }
+            });
+            resultsContainer.innerHTML = `${userScore} out of ${questions.length}`;
+        }
+    </script>
+    <a href="https://github.com/notkulonme/projekt">A projekt github linkje</a>
+</body>
+</html>
