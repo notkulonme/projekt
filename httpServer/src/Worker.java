@@ -48,7 +48,6 @@ public class Worker {
                         if (ct.isText(parser.fileType)) {
 
                             if (parser.requestedFile.equals("/")) {
-
                                 response.addToHeader("HTTP/1.1 200 ok");
                                 response.addToHeader("Content-Type: text/html");
                                 response.addToHeader("Content-Length: " + content.length);
