@@ -41,6 +41,10 @@ public class RSON {
         }
     }
 
+    public void setConf(String key, String value){
+        data.put(key,value);
+    }
+
     public String getValue(String key) {
         return data.get(key);
     }

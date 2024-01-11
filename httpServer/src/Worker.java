@@ -6,7 +6,6 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Scanner;
 
 public class Worker {
 
@@ -27,8 +26,9 @@ public class Worker {
     }
 
     public void run() {
+        Instant start = Instant.now();
         logger.log(socket.getInetAddress() + " connected");
-        String request = "";
+        String request;
 
         try {
             inputStream = socket.getInputStream();
@@ -37,30 +37,21 @@ public class Worker {
             request = getRequest();
             requestParser parser = new requestParser(request);
 
-            logger.log(parser.requestType + " " + parser.requestedFile);
             ResponseBuilder response = new ResponseBuilder();
-            if (parser.validRequest) {
+            if (!parser.error) {
+                logger.log(parser.requestType + " " + parser.requestedFile);
                 ContentType ct = new ContentType();
-                if (parser.requestType.toLowerCase().equals("get")) {
+                if (parser.requestType.equalsIgnoreCase("get")) {
                     File f = new File(Main.WEBROOT + parser.requestedFile);
                     if (f.exists() || parser.requestedFile.equals("/")) {
                         byte[] content = Files.readAllBytes(f.toPath());
                         if (ct.isText(parser.fileType)) {
 
-                            if (parser.requestedFile.equals("/")) {
-                                response.addToHeader("HTTP/1.1 200 ok");
-                                response.addToHeader("Content-Type: text/html");
-                                response.addToHeader("Content-Length: " + content.length);
-                                response.addToHeader("Connection: close");
-                                response.addToBody(f);
-
-                            } else {
-                                response.addToHeader("HTTP/1.1 200 ok");
-                                response.addToHeader("Content-Type: text/" + parser.fileType);
-                                response.addToHeader("Content-Length: " + content.length);
-                                response.addToHeader("Connection: close");
-                                response.addToBody(f);
-                            }
+                            response.addToHeader("HTTP/1.1 200 ok");
+                            response.addToHeader("Content-Type: text/" + parser.fileType+"; charset=utf-8");
+                            response.addToHeader("Content-Length: " + content.length);
+                            response.addToHeader("Connection: close");
+                            response.addToBody(f);
 
 
                         } else {
@@ -91,51 +82,32 @@ public class Worker {
 
                 }
             } else {
-                //iternal server error | invalid request
-                writer.write(("HTTP/1.1 500 Internal Server Error" + CRLF + "Connection: close" + CRLF + CRLF).getBytes());
+                //in case of an error
+                writer.write(("HTTP/1.1 " + parser.errorType + CRLF + "Connection: close" + CRLF + CRLF).getBytes());
             }
             writer.flush();
         } catch (IOException e) {
-            //this probably need more error handling but i dont wanna do it :c
+            //this probably need more error handling but i don't wanna do it :c
             logger.log("IOexception");
         }
-
+        logger.log("Served in: "+Duration.between(start, Instant.now()).toMillis()+" milli second");
     }
 
 
     private String getRequest() throws IOException {
-        String request = "";
+        StringBuilder request = new StringBuilder();
         reader = new InputStreamReader(inputStream);
         Instant start = Instant.now();
         while (!reader.ready()) {
             Instant end = Instant.now();
             Duration duration = Duration.between(start, end);
-            if (duration.toSeconds() > 2.5)
-                break;
+            if (duration.toSeconds() >= 2)
+                return "error 408 \r\n";
         }
         while (reader.ready()) {
-            request += (char) reader.read();
+            request.append((char) reader.read());
         }
-        //logger.log("Full request: " + request);
-        return request;
-    }
-
-
-    private String toString(File file) throws FileNotFoundException {
-
-        Scanner scanner = null;
-        scanner = new Scanner(file);
-        String str = "";
-        while (scanner.hasNextLine())
-            str += scanner.nextLine() + "\n";
-
-        scanner.close();
-        return str + " ";
-
-    }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+        return request.toString();
     }
 
     public void close() throws IOException {
@@ -148,7 +120,6 @@ public class Worker {
 
         logger.log(socket.getInetAddress() + " connection closed");
         socket.close();
-        logger.log("");
     }
 
 }

@@ -1,5 +1,5 @@
-"port" = "80";
+"port" = "420";
 "webroot" = "C:/Users/nrics/OneDrive/Asztali gép/webserver";
-"loggerpath" = "C:/Users/nrics/OneDrive/Asztali gép/webserver/log.txt";
+"loggerpath" = "C:/Users/nrics/OneDrive/Asztali gép/webserver/log1.txt";
 "404" = "true";
 "run" = "true";
