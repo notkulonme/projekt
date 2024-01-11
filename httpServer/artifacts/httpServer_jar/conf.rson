@@ -1,4 +1,0 @@
-"port" = "420";
-"webroot" = "C:/Users/user/webserver";
-"loggerpath" = "C:/Users/user/webserver/log1.txt";
-"404" = "true";
