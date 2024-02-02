@@ -1,8 +1,11 @@
 import java.util.ArrayList;
 
+
+//this class is for identifying data types and other stuff
+//the code explains its self I guess
 public class ContentType {
-    private ArrayList<String> image;
-    private ArrayList<String> text;
+    private final ArrayList<String> image;
+    private final ArrayList<String> text;
 
     public ContentType() {
         image = new ArrayList<>();

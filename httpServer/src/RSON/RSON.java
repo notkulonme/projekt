@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class RSON {
     private final String PATH;
-    private HashMap<String, String> data = new HashMap<>();
+    private final HashMap<String, String> data = new HashMap<>();
 
     public RSON(String PATH) {
         this.PATH = PATH;

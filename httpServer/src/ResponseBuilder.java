@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+//you really just can't remove data from the header or from the body sorry :c
+// i don't know what is happening here maybe i was drunk, but it works
 public class ResponseBuilder {
 
     private byte[] byteHeader;
